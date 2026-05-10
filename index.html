@@ -1,0 +1,985 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio • Votre Nom</title>
+  <meta name="description" content="Portfolio d'exemple (HTML/CSS/JavaScript en ligne)" />
+  <style>
+    :root{
+      --bg:#f6f6f6;
+      --text:#0b0b0b;
+      --card:#ffffff;
+      --accent:#ff3b3b;
+      --accent2:#ffe600;
+      --border:3px solid #000;
+      --shadow: 8px 8px 0 #000;
+      --radius: 18px;
+      --radius2: 12px;
+      --max: 1100px;
+      --focus: 3px solid #000;
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height:1.35;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    button, input, textarea{ font:inherit; }
+    :focus-visible{ outline: var(--focus); outline-offset: 3px; }
+
+    /* Layout */
+    .wrap{ max-width: var(--max); margin:0 auto; padding: 0 16px; }
+    .section{ padding: 72px 0; }
+    .grid{ display:grid; gap:16px; }
+
+    /* Brutalist header */
+    header{
+      position: sticky;
+      top:0;
+      z-index:50;
+      background: rgba(246,246,246,0.86);
+      backdrop-filter: blur(6px);
+      border-bottom: var(--border);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 14px 0;
+      gap: 12px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .logo{
+      width:44px;height:44px;
+      background: var(--accent2);
+      border: var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      display:flex;align-items:center;justify-content:center;
+      transform: rotate(-4deg);
+      flex:0 0 auto;
+    }
+    .logo span{ font-weight: 1000; }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+
+    .pill{
+      border: var(--border);
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: var(--card);
+      box-shadow: 4px 4px 0 #000;
+      font-weight: 800;
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .pill:hover{ transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #000; }
+    .pill[data-active="true"]{ background: var(--accent2); }
+
+    .menu-btn{
+      display:none;
+      border: var(--border);
+      background: var(--card);
+      box-shadow: 4px 4px 0 #000;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-weight: 900;
+    }
+
+    /* Hero */
+    .hero{
+      padding: 52px 0 26px;
+    }
+    .hero-card{
+      background: var(--card);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:-60px -60px auto auto;
+      width: 220px; height: 220px;
+      border: var(--border);
+      border-radius: 32px;
+      background: var(--accent);
+      transform: rotate(18deg);
+      opacity: 0.12;
+      pointer-events:none;
+    }
+
+    .hero-inner{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      padding: 22px;
+      align-items:center;
+    }
+
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      background: #fff;
+      border: var(--border);
+      border-radius: 999px;
+      font-weight: 900;
+      box-shadow: 4px 4px 0 #000;
+      width: fit-content;
+    }
+    .kicker i{
+      display:inline-block;
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border: var(--border);
+      border-radius: 4px;
+      transform: rotate(-12deg);
+    }
+
+    h1{
+      margin: 16px 0 10px;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      font-weight: 1000;
+      text-transform: uppercase;
+    }
+
+    .lead{
+      margin: 0 0 18px;
+      font-size: 18px;
+      font-weight: 700;
+      max-width: 58ch;
+    }
+
+    .cta-row{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 12px 16px;
+      border: var(--border);
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 6px 6px 0 #000;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+      transition: transform .12s ease, box-shadow .12s ease;
+      cursor:pointer;
+    }
+    .btn:hover{ transform: translate(-3px,-3px); box-shadow: 9px 9px 0 #000; }
+    .btn.primary{ background: var(--accent2); }
+    .btn .arrow{ font-weight: 1000; }
+
+    /* Right side hero */
+    .hero-side{
+      border: var(--border);
+      border-radius: var(--radius2);
+      padding: 14px;
+      background: #fff;
+      box-shadow: 6px 6px 0 #000;
+    }
+
+    .avatar{
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 16px;
+      border: var(--border);
+      background: repeating-linear-gradient(
+        45deg,
+        #fff,
+        #fff 10px,
+        #000 10px,
+        #000 20px
+      );
+      box-shadow: 6px 6px 0 #000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+      transform: rotate(2deg);
+    }
+    .avatar .txt{
+      border: var(--border);
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px 12px;
+      text-align:center;
+      box-shadow: 6px 6px 0 #000;
+      font-weight: 1000;
+      text-transform: uppercase;
+    }
+    .avatar .txt .small{
+      display:block;
+      font-weight: 900;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+
+    .chips{
+      margin-top: 12px;
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .chip{
+      border: var(--border);
+      background: #fff;
+      border-radius: 999px;
+      padding: 10px 12px;
+      box-shadow: 4px 4px 0 #000;
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    /* Section headings */
+    .sec-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .sec-title{
+      font-weight: 1000;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      font-size: clamp(22px, 3vw, 30px);
+      margin:0;
+    }
+    .sec-badge{
+      border: var(--border);
+      background: #fff;
+      border-radius: 999px;
+      padding: 10px 14px;
+      box-shadow: 6px 6px 0 #000;
+      font-weight: 950;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    /* Cards */
+    .cards-3{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .cards-2{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .card{
+      background:#fff;
+      border: var(--border);
+      border-radius: var(--radius2);
+      box-shadow: 8px 8px 0 #000;
+      padding: 16px;
+      min-height: 160px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+    .card h3{
+      margin:0;
+      font-weight: 1000;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      font-size: 18px;
+    }
+    .card p{
+      margin:0;
+      font-weight: 700;
+    }
+    .card .meta{
+      margin-top:auto;
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .tag{
+      border: var(--border);
+      border-radius: 999px;
+      padding: 8px 10px;
+      background: var(--bg);
+      box-shadow: 4px 4px 0 #000;
+      font-weight: 900;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    /* About */
+    .about-grid{
+      grid-template-columns: 1.05fr .95fr;
+      align-items:start;
+    }
+    .list{
+      margin:0;
+      padding-left: 18px;
+      font-weight: 750;
+    }
+    .list li{ margin: 10px 0; }
+
+    /* Projects */
+    .proj-card{
+      cursor:pointer;
+      transition: transform .12s ease;
+    }
+    .proj-card:hover{ transform: translate(-3px,-3px); }
+    .thumb{
+      height: 84px;
+      border: var(--border);
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 6px 6px 0 #000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 1000;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+      position:relative;
+      overflow:hidden;
+    }
+    .thumb::after{
+      content:"";
+      position:absolute;
+      inset: -40px -40px auto auto;
+      width: 120px; height: 120px;
+      border-radius: 26px;
+      border: var(--border);
+      background: var(--accent2);
+      transform: rotate(16deg);
+      opacity: 0.8;
+    }
+
+    /* Modal */
+    .modal-backdrop{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 200;
+    }
+    .modal{
+      width: min(760px, 100%);
+      background:#fff;
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: 16px 16px 0 #000;
+      padding: 16px;
+      display:grid;
+      gap: 12px;
+    }
+    .modal-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .modal h3{
+      margin:0;
+      font-size: 22px;
+      text-transform: uppercase;
+      font-weight: 1000;
+      letter-spacing: -0.02em;
+    }
+    .close{
+      border: var(--border);
+      background: var(--card);
+      box-shadow: 6px 6px 0 #000;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 1000;
+      cursor:pointer;
+    }
+    .modal p{ margin:0; font-weight: 750; }
+    .modal .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .modal .box{
+      border: var(--border);
+      border-radius: 14px;
+      background: var(--bg);
+      box-shadow: 6px 6px 0 #000;
+      padding: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+    .modal .actions{
+      display:flex;
+      gap: 12px;
+      flex-wrap:wrap;
+      margin-top: 4px;
+    }
+
+    /* Contact */
+    .form{
+      display:grid;
+      gap: 12px;
+    }
+    .field{
+      display:grid;
+      gap: 8px;
+    }
+    label{
+      font-weight: 950;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+    input, textarea{
+      border: var(--border);
+      border-radius: 14px;
+      padding: 12px 12px;
+      background:#fff;
+      box-shadow: 6px 6px 0 #000;
+      font-weight: 800;
+      width: 100%;
+    }
+    textarea{ min-height: 120px; resize: vertical; }
+    .form .note{
+      font-weight: 750;
+      margin-top: -6px;
+      opacity: 0.9;
+    }
+
+    .status{
+      display:none;
+      border: var(--border);
+      border-radius: 14px;
+      background: var(--accent2);
+      padding: 12px 12px;
+      box-shadow: 6px 6px 0 #000;
+      font-weight: 1000;
+      text-transform: uppercase;
+    }
+
+    /* Footer */
+    footer{
+      border-top: var(--border);
+      padding: 26px 0;
+      background: #fff;
+    }
+    .foot{
+      display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap: wrap;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+    .social{
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .hero-inner{ grid-template-columns: 1fr; }
+      .cards-3{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .about-grid{ grid-template-columns: 1fr; }
+      .cards-2{ grid-template-columns: 1fr; }
+      .modal .row{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px){
+      .nav-links{ display:none; }
+      .menu-btn{ display:inline-flex; align-items:center; gap:10px; }
+      .cards-3{ grid-template-columns: 1fr; }
+      .section{ padding: 56px 0; }
+    }
+
+    /* Mobile drawer */
+    .drawer{
+      display:none;
+      border-top: var(--border);
+      background: rgba(246,246,246,0.98);
+    }
+    .drawer .wrap{ padding: 12px 16px 18px; }
+    .drawer .nav-links{ display:flex; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap nav" role="navigation" aria-label="Navigation principale">
+      <a class="brand" href="#top">
+        <div class="logo" aria-hidden="true"><span>V</span></div>
+        <div>
+          <div style="font-size:14px; line-height:1;">Portfolio</div>
+          <div style="font-size:16px;">Votre Nom</div>
+        </div>
+      </a>
+
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="drawer">
+        Menu <span aria-hidden="true">☰</span>
+      </button>
+
+      <nav class="nav-links" aria-label="Liens">
+        <a class="pill" href="#projets" data-section="projets">Projets</a>
+        <a class="pill" href="#competences" data-section="competences">Compétences</a>
+        <a class="pill" href="#a-propos" data-section="a-propos">À propos</a>
+        <a class="pill" href="#contact" data-section="contact">Contact</a>
+      </nav>
+    </div>
+
+    <div class="drawer" id="drawer">
+      <div class="wrap">
+        <div class="nav-links" aria-label="Liens (mobile)">
+          <a class="pill" href="#projets" data-section="projets">Projets</a>
+          <a class="pill" href="#competences" data-section="competences">Compétences</a>
+          <a class="pill" href="#a-propos" data-section="a-propos">À propos</a>
+          <a class="pill" href="#contact" data-section="contact">Contact</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-card">
+        <div class="hero-inner">
+          <div>
+            <div class="kicker"><i aria-hidden="true"></i> Développeur • HTML/CSS/JS</div>
+            <h1>Je construis des sites rapides,<br>clairs et qui marchent.</h1>
+            <p class="lead">
+              Remplacez “Votre Nom”, “Compétences” et “Projets” par vos infos.
+              Le JavaScript gère le menu mobile, la modale des projets et la validation du formulaire.
+            </p>
+
+            <div class="cta-row">
+              <a class="btn primary" href="#projets">
+                Voir les projets <span class="arrow" aria-hidden="true">→</span>
+              </a>
+              <a class="btn" href="#contact">
+                Me contacter <span class="arrow" aria-hidden="true">✉</span>
+              </a>
+            </div>
+          </div>
+
+          <aside class="hero-side" aria-label="Résumé">
+            <div class="avatar" aria-hidden="true">
+              <div class="txt">
+                Votre Logo
+                <span class="small">Portfolio • Brutaliste</span>
+              </div>
+            </div>
+            <div class="chips" aria-label="Spécialités">
+              <div class="chip">UI/UX</div>
+              <div class="chip">Front-end</div>
+              <div class="chip">Accessibilité</div>
+              <div class="chip">Performance</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projets">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Projets</h2>
+          <div class="sec-badge">Cliquez sur une carte</div>
+        </div>
+
+        <div class="grid cards-3" id="projectsGrid">
+          <article class="card proj-card" tabindex="0" role="button" data-project-id="1" aria-label="Projet 1">
+            <div class="thumb">E-commerce</div>
+            <h3>Shop Express</h3>
+            <p>Page produits, panier, filtres et responsive.</p>
+            <div class="meta">
+              <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span>
+            </div>
+          </article>
+
+          <article class="card proj-card" tabindex="0" role="button" data-project-id="2" aria-label="Projet 2">
+            <div class="thumb">Dashboard</div>
+            <h3>Stats Brutal</h3>
+            <p>Tableaux, filtres, rendu clair et interactif.</p>
+            <div class="meta">
+              <span class="tag">DOM</span><span class="tag">UX</span><span class="tag">A11y</span>
+            </div>
+          </article>
+
+          <article class="card proj-card" tabindex="0" role="button" data-project-id="3" aria-label="Projet 3">
+            <div class="thumb">Landing</div>
+            <h3>Launch Page</h3>
+            <p>Section hero, témoignages, CTA et validation formulaire.</p>
+            <div class="meta">
+              <span class="tag">SEO</span><span class="tag">Form</span><span class="tag">Responsive</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="competences">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Compétences</h2>
+          <div class="sec-badge">Ce que je fais bien</div>
+        </div>
+
+        <div class="grid cards-2">
+          <div class="card">
+            <h3>Front-end</h3>
+            <p>Interfaces propres, lisibles, et responsives.</p>
+            <div class="meta">
+              <span class="tag">Layout</span><span class="tag">UI</span><span class="tag">Tests manuels</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>JavaScript vanilla</h3>
+            <p>Interactions sans dépendances, code simple.</p>
+            <div class="meta">
+              <span class="tag">DOM</span><span class="tag">Events</span><span class="tag">Modales</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Accessibilité</h3>
+            <p>Focus visible, aria labels, navigation clavier.</p>
+            <div class="meta">
+              <span class="tag">A11y</span><span class="tag">Keyboard</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Performance</h3>
+            <p>Moins de complexité, rendu rapide.</p>
+            <div class="meta">
+              <span class="tag">Lisibilité</span><span class="tag">Simplicité</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="a-propos">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">À propos</h2>
+          <div class="sec-badge">Mon approche</div>
+        </div>
+
+        <div class="grid about-grid">
+          <div class="card" style="min-height: unset;">
+            <h3>Qui je suis</h3>
+            <p>
+              Je conçois des interfaces “clean”, avec une hiérarchie visuelle forte et des interactions utiles.
+              Je préfère le code simple et maintenable.
+            </p>
+            <ul class="list">
+              <li>Objectif : un site qui se comprend en 5 secondes.</li>
+              <li>Design : brutaliste cartoon (couleurs franches, bordures nettes).</li>
+              <li>Qualité : navigation clavier + états de focus.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="min-height: unset;">
+            <h3>Ce que vous obtenez</h3>
+            <p>Un portfolio fonctionnel avec interactions prêtes à l’emploi :</p>
+            <ul class="list">
+              <li>Menu mobile</li>
+              <li>Modale détaillant les projets</li>
+              <li>Formulaire contact avec validation</li>
+              <li>Navigation “active” selon la section</li>
+            </ul>
+            <div class="meta" style="margin-top: 12px;">
+              <span class="tag">1 fichier</span><span class="tag">Sans dépendance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title">Contact</h2>
+          <div class="sec-badge">Réponse rapide</div>
+        </div>
+
+        <div class="grid cards-2">
+          <div class="card" style="min-height: unset;">
+            <h3>Infos</h3>
+            <p style="margin-top:-4px;">Remplacez ces données par les vôtres :</p>
+            <div class="meta" style="margin-top: 14px;">
+              <span class="tag">Email: votre@email.com</span>
+              <span class="tag">Ville: votre ville</span>
+            </div>
+            <p style="margin-top: 14px;">Vous voulez un lien vers GitHub/LinkedIn ? Ajoutez-le dans le footer.</p>
+          </div>
+
+          <div class="card" style="min-height: unset;">
+            <h3>Envoyer un message</h3>
+            <div class="status" id="statusBox" role="status" aria-live="polite"></div>
+
+            <form class="form" id="contactForm">
+              <div class="field">
+                <label for="name">Nom</label>
+                <input id="name" name="name" type="text" autocomplete="name" placeholder="Votre nom" required minlength="2" />
+              </div>
+
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="vous@exemple.com" required />
+              </div>
+
+              <div class="field">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Écrivez votre message..." required minlength="10"></textarea>
+                <div class="note">Astuce : 10 caractères minimum.</div>
+              </div>
+
+              <button class="btn primary" type="submit">
+                Envoyer <span class="arrow" aria-hidden="true">→</span>
+              </button>
+
+              <div class="note" id="formHint">
+                Démo : l’envoi est simulé (aucun backend). Pour un vrai envoi, branchez une API/Email service.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>© <span id="year"></span> • Votre Nom</div>
+      <div class="social" aria-label="Réseaux">
+        <a class="pill" href="#top" data-section="top">Haut</a>
+        <a class="pill" href="#" onclick="return false;">GitHub</a>
+        <a class="pill" href="#" onclick="return false;">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-label="Détails du projet">
+    <div class="modal">
+      <div class="modal-top">
+        <div>
+          <h3 id="modalTitle">Titre</h3>
+          <p id="modalDesc">Description</p>
+        </div>
+        <button class="close" id="modalClose" type="button">Fermer ✕</button>
+      </div>
+
+      <div class="row">
+        <div class="box" id="modalTech">Tech: —</div>
+        <div class="box" id="modalRole">Rôle: —</div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="modalPrev" type="button">← Projet précédent</button>
+        <button class="btn primary" id="modalNext" type="button">Projet suivant →</button>
+      </div>
+      <div class="note" style="font-weight:800;">
+        Démo : liens à brancher. (Vous pouvez ajouter href vers GitHub / live demo.)
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const yearEl = document.getElementById('year');
+      if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+      const drawer = document.getElementById('drawer');
+      const menuBtn = document.getElementById('menuBtn');
+
+      if (menuBtn && drawer) {
+        menuBtn.addEventListener('click', () => {
+          const isOpen = drawer.style.display === 'block';
+          drawer.style.display = isOpen ? 'none' : 'block';
+          menuBtn.setAttribute('aria-expanded', String(!isOpen));
+        });
+
+        // Fermer sur clic lien (mobile)
+        drawer.addEventListener('click', (e) => {
+          const target = e.target;
+          if (target && target.tagName === 'A') {
+            drawer.style.display = 'none';
+            menuBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      // Active section (simple)
+      const pills = Array.from(document.querySelectorAll('a.pill[data-section]'));
+      const sectionIds = ['projets', 'competences', 'a-propos', 'contact'];
+
+      function setActive(sectionId) {
+        pills.forEach(p => {
+          const active = p.getAttribute('data-section') === sectionId;
+          p.dataset.active = active ? 'true' : 'false';
+        });
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries
+          .filter(ent => ent.isIntersecting)
+          .sort((a, b) => (b.intersectionRatio - a.intersectionRatio))[0];
+        if (!visible) return;
+        const id = visible.target.getAttribute('id');
+        if (sectionIds.includes(id)) setActive(id);
+      }, { threshold: [0.2, 0.35, 0.5] });
+
+      sectionIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+
+      // Projects modal
+      const projects = [
+        { id: '1', title: 'Shop Express', desc: 'Page produits, panier, filtres et rendu responsive.', tech: 'HTML • CSS • JS (vanilla)', role: 'Front-end' },
+        { id: '2', title: 'Stats Brutal', desc: 'Tableaux, filtres, rendu clair et interactif.', tech: 'DOM • UI • Accessibilité', role: 'UI/UX & Front-end' },
+        { id: '3', title: 'Launch Page', desc: 'Landing page, CTA, sections et validation formulaire.', tech: 'HTML • CSS • JS (validation)', role: 'Front-end' }
+      ];
+
+      const grid = document.getElementById('projectsGrid');
+      const backdrop = document.getElementById('modalBackdrop');
+      const modalClose = document.getElementById('modalClose');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalDesc = document.getElementById('modalDesc');
+      const modalTech = document.getElementById('modalTech');
+      const modalRole = document.getElementById('modalRole');
+      const modalPrev = document.getElementById('modalPrev');
+      const modalNext = document.getElementById('modalNext');
+
+      let currentIndex = 0;
+      let lastFocus = null;
+
+      function openModalByIndex(index) {
+        const i = ((index % projects.length) + projects.length) % projects.length;
+        currentIndex = i;
+        const proj = projects[i];
+
+        modalTitle.textContent = proj.title;
+        modalDesc.textContent = proj.desc;
+        modalTech.textContent = 'Tech: ' + proj.tech;
+        modalRole.textContent = 'Rôle: ' + proj.role;
+
+        backdrop.style.display = 'flex';
+        lastFocus = document.activeElement;
+        modalClose.focus();
+      }
+
+      function closeModal() {
+        backdrop.style.display = 'none';
+        if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+      }
+
+      if (grid) {
+        grid.addEventListener('click', (e) => {
+          const card = e.target.closest('.proj-card');
+          if (!card) return;
+          const id = card.getAttribute('data-project-id');
+          const idx = projects.findIndex(p => p.id === id);
+          if (idx >= 0) openModalByIndex(idx);
+        });
+
+        grid.addEventListener('keydown', (e) => {
+          const card = e.target.closest('.proj-card');
+          if (!card) return;
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          const id = card.getAttribute('data-project-id');
+          const idx = projects.findIndex(p => p.id === id);
+          if (idx >= 0) openModalByIndex(idx);
+        });
+      }
+
+      if (modalClose) modalClose.addEventListener('click', closeModal);
+
+      document.addEventListener('keydown', (e) => {
+        if (backdrop && backdrop.style.display === 'flex' && e.key === 'Escape') closeModal();
+      });
+
+      if (backdrop) {
+        backdrop.addEventListener('click', (e) => {
+          if (e.target === backdrop) closeModal();
+        });
+      }
+
+      if (modalPrev) modalPrev.addEventListener('click', () => openModalByIndex(currentIndex - 1));
+      if (modalNext) modalNext.addEventListener('click', () => openModalByIndex(currentIndex + 1));
+
+      // Contact form
+      const form = document.getElementById('contactForm');
+      const statusBox = document.getElementById('statusBox');
+
+      function showStatus(message) {
+        if (!statusBox) return;
+        statusBox.textContent = message;
+        statusBox.style.display = 'block';
+      }
+
+      function clearStatus() {
+        if (!statusBox) return;
+        statusBox.textContent = '';
+        statusBox.style.display = 'none';
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          clearStatus();
+
+          const name = form.name.value.trim();
+          const email = form.email.value.trim();
+          const message = form.message.value.trim();
+
+          // Validation
+          const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+          if (name.length < 2) { showStatus('Nom trop court.'); form.name.focus(); return; }
+          if (!emailOk) { showStatus('Email invalide.'); form.email.focus(); return; }
+          if (message.length < 10) { showStatus('Message trop court (min 10).'); form.message.focus(); return; }
+
+          // Envoi réel via mailto (sans backend)
+          const to = 'souleymanesacko924@gmail.com';
+          const subject = encodeURIComponent('Message depuis le portfolio');
+          const body = encodeURIComponent(`Nom: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n`);
+
+          showStatus('Ouverture de votre email… ✅');
+          form.reset();
+          window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
